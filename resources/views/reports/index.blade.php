@@ -6,7 +6,7 @@
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="file-text" label="{{ __('Active Leases') }}" value="{{ $activeLeases }}" color="green" />
+            <x-stat-card icon="document-text" label="{{ __('Active Leases') }}" value="{{ $activeLeases }}" color="green" />
             <x-stat-card icon="alert-circle" label="{{ __('Terminating Leases') }}" value="{{ $terminatingLeases }}" color="orange" />
             <x-stat-card icon="shield" label="{{ __('Escrow Held (KES)') }}" value="{{ number_format($totalDepositsHeld, 2) }}" color="blue" />
             <x-stat-card icon="wrench" label="{{ __('Open Maintenance') }}" value="{{ $openMaintenance }}" color="amber" />

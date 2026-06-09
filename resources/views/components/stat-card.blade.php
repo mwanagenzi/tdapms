@@ -1,5 +1,5 @@
 @props([
-    'icon' => 'bar-chart-2',
+    'icon' => 'chart-bar',
     'label' => '',
     'value' => '—',
     'sub' => null,

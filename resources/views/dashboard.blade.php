@@ -22,36 +22,36 @@
         {{-- Super Admin Stats --}}
         @role('super_admin')
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="building-2" label="{{ __('Total Landlords') }}" value="—" color="blue" />
-            <x-stat-card icon="building" label="{{ __('Total Properties') }}" value="—" color="indigo" />
-            <x-stat-card icon="users" label="{{ __('Active Tenants') }}" value="—" color="green" />
-            <x-stat-card icon="shield" label="{{ __('Total Escrow (KES)') }}" value="—" color="amber" />
+            <x-stat-card icon="building-office-2" label="{{ __('Total Landlords') }}" value="—" color="blue" />
+            <x-stat-card icon="building-office" label="{{ __('Total Properties') }}" value="—" color="indigo" />
+            <x-stat-card icon="user-group" label="{{ __('Active Tenants') }}" value="—" color="green" />
+            <x-stat-card icon="shield-check" label="{{ __('Total Escrow (KES)') }}" value="—" color="amber" />
         </div>
         @endrole
 
         {{-- Landlord Stats --}}
         @role('landlord')
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="building" label="{{ __('Properties') }}" value="—" color="blue" />
-            <x-stat-card icon="users" label="{{ __('Active Tenants') }}" value="—" color="green" />
-            <x-stat-card icon="shield" label="{{ __('Escrow Balance (KES)') }}" value="—" color="amber" />
+            <x-stat-card icon="building-office" label="{{ __('Properties') }}" value="—" color="blue" />
+            <x-stat-card icon="user-group" label="{{ __('Active Tenants') }}" value="—" color="green" />
+            <x-stat-card icon="shield-check" label="{{ __('Escrow Balance (KES)') }}" value="—" color="amber" />
             <x-stat-card icon="clock" label="{{ __('Pending Deductions') }}" value="—" color="orange" />
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <x-stat-card icon="check-circle" label="{{ __('Deposits Held') }}" value="—" color="emerald" />
-            <x-stat-card icon="rotate-ccw" label="{{ __('Pending Refunds') }}" value="—" color="sky" />
-            <x-stat-card icon="bar-chart-2" label="{{ __('Refunds This Month (KES)') }}" value="—" color="violet" />
+            <x-stat-card icon="arrow-path" label="{{ __('Pending Refunds') }}" value="—" color="sky" />
+            <x-stat-card icon="chart-bar" label="{{ __('Refunds This Month (KES)') }}" value="—" color="violet" />
         </div>
         @endrole
 
         {{-- Caretaker Stats --}}
         @role('caretaker')
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="building" label="{{ __('My Properties') }}" value="—" color="blue" />
-            <x-stat-card icon="users" label="{{ __('Active Tenants') }}" value="—" color="green" />
-            <x-stat-card icon="clipboard-check" label="{{ __('Pending Inspections') }}" value="—" color="amber" />
-            <x-stat-card icon="wrench" label="{{ __('Open Maintenance') }}" value="—" color="orange" />
+            <x-stat-card icon="building-office" label="{{ __('My Properties') }}" value="—" color="blue" />
+            <x-stat-card icon="user-group" label="{{ __('Active Tenants') }}" value="—" color="green" />
+            <x-stat-card icon="clipboard-document-check" label="{{ __('Pending Inspections') }}" value="—" color="amber" />
+            <x-stat-card icon="wrench-screwdriver" label="{{ __('Open Maintenance') }}" value="—" color="orange" />
         </div>
         @endrole
 

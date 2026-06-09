@@ -14,7 +14,7 @@
             <div class="flex gap-2">
                 @can('create leases')
                 @if (!$tenant->activeLease)
-                <flux:button href="{{ route('leases.create') }}?tenant_id={{ $tenant->id }}" size="sm" variant="primary" icon="file-text" wire:navigate>
+                <flux:button href="{{ route('leases.create') }}?tenant_id={{ $tenant->id }}" size="sm" variant="primary" icon="document-text" wire:navigate>
                     {{ __('Create Lease') }}
                 </flux:button>
                 @endif

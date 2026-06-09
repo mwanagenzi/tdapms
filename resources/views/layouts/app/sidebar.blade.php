@@ -12,7 +12,7 @@
 
             <flux:sidebar.nav>
                 {{-- Dashboard --}}
-                <flux:sidebar.item icon="layout-dashboard" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:sidebar.item icon="squares-2x2" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:sidebar.item>
 
@@ -20,7 +20,7 @@
                 @role('super_admin')
                 <flux:sidebar.group heading="{{ __('System') }}" class="grid">
                     @if (Route::has('landlords.index'))
-                        <flux:sidebar.item icon="building-2" :href="route('landlords.index')" :current="request()->routeIs('landlords.*')" wire:navigate>
+                        <flux:sidebar.item icon="building-office-2" :href="route('landlords.index')" :current="request()->routeIs('landlords.*')" wire:navigate>
                             {{ __('Landlords') }}
                         </flux:sidebar.item>
                     @endif
@@ -31,7 +31,7 @@
                 @role('landlord|super_admin')
                 <flux:sidebar.group heading="{{ __('Properties') }}" class="grid">
                     @if (Route::has('properties.index'))
-                        <flux:sidebar.item icon="building" :href="route('properties.index')" :current="request()->routeIs('properties.*')" wire:navigate>
+                        <flux:sidebar.item icon="building-office" :href="route('properties.index')" :current="request()->routeIs('properties.*')" wire:navigate>
                             {{ __('Properties') }}
                         </flux:sidebar.item>
                     @endif
@@ -41,7 +41,7 @@
                         </flux:sidebar.item>
                     @endif
                     @if (Route::has('caretakers.index'))
-                        <flux:sidebar.item icon="user-cog" :href="route('caretakers.index')" :current="request()->routeIs('caretakers.*')" wire:navigate>
+                        <flux:sidebar.item icon="wrench-screwdriver" :href="route('caretakers.index')" :current="request()->routeIs('caretakers.*')" wire:navigate>
                             {{ __('Caretakers') }}
                         </flux:sidebar.item>
                     @endif
@@ -52,7 +52,7 @@
                 @role('caretaker')
                 <flux:sidebar.group heading="{{ __('Properties') }}" class="grid">
                     @if (Route::has('properties.index'))
-                        <flux:sidebar.item icon="building" :href="route('properties.index')" :current="request()->routeIs('properties.*')" wire:navigate>
+                        <flux:sidebar.item icon="building-office" :href="route('properties.index')" :current="request()->routeIs('properties.*')" wire:navigate>
                             {{ __('My Properties') }}
                         </flux:sidebar.item>
                     @endif
@@ -63,12 +63,12 @@
                 @role('super_admin|landlord|caretaker')
                 <flux:sidebar.group heading="{{ __('Tenants') }}" class="grid">
                     @if (Route::has('tenants.index'))
-                        <flux:sidebar.item icon="users" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>
+                        <flux:sidebar.item icon="user-group" :href="route('tenants.index')" :current="request()->routeIs('tenants.*')" wire:navigate>
                             {{ __('Tenants') }}
                         </flux:sidebar.item>
                     @endif
                     @if (Route::has('leases.index'))
-                        <flux:sidebar.item icon="file-text" :href="route('leases.index')" :current="request()->routeIs('leases.*')" wire:navigate>
+                        <flux:sidebar.item icon="document-text" :href="route('leases.index')" :current="request()->routeIs('leases.*')" wire:navigate>
                             {{ __('Leases') }}
                         </flux:sidebar.item>
                     @endif
@@ -79,12 +79,12 @@
                 @role('super_admin|landlord|caretaker')
                 <flux:sidebar.group heading="{{ __('Finances') }}" class="grid">
                     @if (Route::has('deposits.index'))
-                        <flux:sidebar.item icon="shield" :href="route('deposits.index')" :current="request()->routeIs('deposits.*')" wire:navigate>
+                        <flux:sidebar.item icon="shield-check" :href="route('deposits.index')" :current="request()->routeIs('deposits.*')" wire:navigate>
                             {{ __('Deposits & Escrow') }}
                         </flux:sidebar.item>
                     @endif
                     @if (Route::has('deposit-deductions.index'))
-                        <flux:sidebar.item icon="scissors" :href="route('deposit-deductions.index')" :current="request()->routeIs('deposit-deductions.*')" wire:navigate>
+                        <flux:sidebar.item icon="minus-circle" :href="route('deposit-deductions.index')" :current="request()->routeIs('deposit-deductions.*')" wire:navigate>
                             {{ __('Deductions') }}
                         </flux:sidebar.item>
                     @endif
@@ -95,12 +95,12 @@
                 @role('super_admin|landlord|caretaker')
                 <flux:sidebar.group heading="{{ __('Operations') }}" class="grid">
                     @if (Route::has('inspections.index'))
-                        <flux:sidebar.item icon="clipboard-check" :href="route('inspections.index')" :current="request()->routeIs('inspections.*')" wire:navigate>
+                        <flux:sidebar.item icon="clipboard-document-check" :href="route('inspections.index')" :current="request()->routeIs('inspections.*')" wire:navigate>
                             {{ __('Inspections') }}
                         </flux:sidebar.item>
                     @endif
                     @if (Route::has('maintenance.index'))
-                        <flux:sidebar.item icon="wrench" :href="route('maintenance.index')" :current="request()->routeIs('maintenance.*')" wire:navigate>
+                        <flux:sidebar.item icon="wrench-screwdriver" :href="route('maintenance.index')" :current="request()->routeIs('maintenance.*')" wire:navigate>
                             {{ __('Maintenance') }}
                         </flux:sidebar.item>
                     @endif
@@ -111,7 +111,7 @@
                 @role('super_admin|landlord|caretaker')
                 <flux:sidebar.group heading="{{ __('Communication') }}" class="grid">
                     @if (Route::has('messages.index'))
-                        <flux:sidebar.item icon="message-circle" :href="route('messages.index')" :current="request()->routeIs('messages.*')" wire:navigate>
+                        <flux:sidebar.item icon="chat-bubble-left-right" :href="route('messages.index')" :current="request()->routeIs('messages.*')" wire:navigate>
                             {{ __('Messages') }}
                         </flux:sidebar.item>
                     @endif
@@ -122,7 +122,7 @@
                 @role('super_admin|landlord')
                 <flux:sidebar.group heading="{{ __('Analytics') }}" class="grid">
                     @if (Route::has('reports.index'))
-                        <flux:sidebar.item icon="bar-chart-2" :href="route('reports.index')" :current="request()->routeIs('reports.*')" wire:navigate>
+                        <flux:sidebar.item icon="chart-bar" :href="route('reports.index')" :current="request()->routeIs('reports.*')" wire:navigate>
                             {{ __('Reports') }}
                         </flux:sidebar.item>
                     @endif
