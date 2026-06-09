@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Edit Lease')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">Edit Lease</flux:heading>
             <flux:text class="mt-1 text-zinc-500">
@@ -17,7 +17,7 @@
                     <flux:input name="start_date" type="date" value="{{ old('start_date', $lease->start_date->format('Y-m-d')) }}" required />
                 </flux:field>
                 <flux:field>
-                    <flux:label>{{ __('End Date') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                    <flux:label aside="{{ __('Optional') }}">{{ __('End Date') }} </flux:label>
                     <flux:input name="end_date" type="date" value="{{ old('end_date', $lease->end_date?->format('Y-m-d')) }}" />
                 </flux:field>
             </div>

@@ -19,9 +19,9 @@
         {{-- Filter --}}
         <form method="GET" class="flex gap-3">
             <flux:select name="property_id" class="w-56">
-                <flux:option value="">{{ __('All Properties') }}</flux:option>
+                <option value="">{{ __('All Properties') }}</option>
                 @foreach ($properties as $property)
-                    <flux:option value="{{ $property->id }}" :selected="$propertyFilter == $property->id">{{ $property->name }}</flux:option>
+                    <option value="{{ $property->id }}"  @selected($propertyFilter == $property->id)>{{ $property->name }}</option>
                 @endforeach
             </flux:select>
             <flux:button type="submit" variant="ghost">{{ __('Filter') }}</flux:button>

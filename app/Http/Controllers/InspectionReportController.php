@@ -18,10 +18,10 @@ class InspectionReportController extends Controller
         $query = InspectionReport::with(['lease.tenant.user', 'lease.unit.property', 'conductedBy']);
 
         if ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereHas('lease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         } elseif ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('lease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         }
 
@@ -40,13 +40,13 @@ class InspectionReportController extends Controller
         $user = $request->user();
 
         $leases = Lease::with(['tenant.user', 'unit.property'])
-            ->whereIn('status', ['active', 'terminating'])
+            ->whereIn('status', ['pending_deposit', 'active', 'terminating'])
             ->when($user->hasRole('caretaker'), function ($q) use ($user) {
-                $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+                $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
                 $q->whereHas('unit', fn ($q2) => $q2->whereIn('property_id', $propertyIds));
             })
             ->when($user->hasRole('landlord'), function ($q) use ($user) {
-                $propertyIds = $user->landlord->properties()->pluck('id');
+                $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
                 $q->whereHas('unit', fn ($q2) => $q2->whereIn('property_id', $propertyIds));
             })
             ->get();

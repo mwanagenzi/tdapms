@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Create Lease')">
-    <flux:main class="max-w-2xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">{{ __('Create Lease') }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">
@@ -16,11 +16,11 @@
                 <flux:field>
                     <flux:label>{{ __('Tenant') }}</flux:label>
                     <flux:select name="tenant_id" required>
-                        <flux:option value="">{{ __('Select tenant…') }}</flux:option>
+                        <option value="">{{ __('Select tenant…') }}</option>
                         @foreach ($activeTenants as $tenant)
-                            <flux:option value="{{ $tenant->id }}" :selected="old('tenant_id', request('tenant_id')) == $tenant->id">
+                            <option value="{{ $tenant->id }}"  @selected(old('tenant_id', request('tenant_id')) == $tenant->id)>
                                 {{ $tenant->user->name }}
-                            </flux:option>
+                            </option>
                         @endforeach
                     </flux:select>
                     @error('tenant_id') <flux:error>{{ $message }}</flux:error> @enderror
@@ -29,11 +29,11 @@
                 <flux:field>
                     <flux:label>{{ __('Unit') }}</flux:label>
                     <flux:select name="unit_id" required>
-                        <flux:option value="">{{ __('Select unit…') }}</flux:option>
+                        <option value="">{{ __('Select unit…') }}</option>
                         @foreach ($availableUnits as $unit)
-                            <flux:option value="{{ $unit->id }}" :selected="old('unit_id', request('unit_id')) == $unit->id">
+                            <option value="{{ $unit->id }}"  @selected(old('unit_id', request('unit_id')) == $unit->id)>
                                 {{ $unit->unit_number }} — {{ $unit->property->name }}
-                            </flux:option>
+                            </option>
                         @endforeach
                     </flux:select>
                     @error('unit_id') <flux:error>{{ $message }}</flux:error> @enderror
@@ -47,7 +47,7 @@
                     @error('start_date') <flux:error>{{ $message }}</flux:error> @enderror
                 </flux:field>
                 <flux:field>
-                    <flux:label>{{ __('End Date') }} <flux:label.suffix>{{ __('Leave blank for open-ended') }}</flux:label.suffix></flux:label>
+                    <flux:label aside="{{ __('Leave blank for open-ended') }}">{{ __('End Date') }} </flux:label>
                     <flux:input name="end_date" type="date" value="{{ old('end_date') }}" />
                     @error('end_date') <flux:error>{{ $message }}</flux:error> @enderror
                 </flux:field>
@@ -76,7 +76,7 @@
             </div>
 
             <flux:field>
-                <flux:label>{{ __('Notes') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('Notes') }} </flux:label>
                 <flux:textarea name="notes" rows="2">{{ old('notes') }}</flux:textarea>
             </flux:field>
 

@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Edit Tenant')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">Edit Tenant</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ $tenant->user->name }}</flux:text>

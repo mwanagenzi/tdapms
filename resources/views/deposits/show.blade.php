@@ -24,10 +24,10 @@
 
         {{-- Summary cards --}}
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="shield" label="Required" value="KES {{ number_format($deposit->amount_required, 2) }}" color="blue" />
+            <x-stat-card icon="shield-check" label="Required" value="KES {{ number_format($deposit->amount_required, 2) }}" color="blue" />
             <x-stat-card icon="check-circle" label="Paid" value="KES {{ number_format($deposit->amount_paid, 2) }}" :color="$deposit->is_fully_paid ? 'green' : 'amber'" />
-            <x-stat-card icon="alert-circle" label="Outstanding" value="KES {{ number_format($deposit->outstanding, 2) }}" :color="$deposit->outstanding > 0 ? 'orange' : 'zinc'" />
-            <x-stat-card icon="calculator" label="Net Refund" value="KES {{ number_format($deposit->net_refund_amount, 2) }}" color="sky" />
+            <x-stat-card icon="exclamation-circle" label="Outstanding" value="KES {{ number_format($deposit->outstanding, 2) }}" :color="$deposit->outstanding > 0 ? 'orange' : 'zinc'" />
+            <x-stat-card icon="receipt-percent" label="Net Refund" value="KES {{ number_format($deposit->net_refund_amount, 2) }}" color="sky" />
         </div>
 
         {{-- Actions --}}
@@ -36,7 +36,7 @@
                 @if (in_array($deposit->status, ['pending', 'partially_paid']))
                 <form method="POST" action="{{ route('deposits.initiate-collection', $deposit) }}">
                     @csrf
-                    <flux:button type="submit" variant="primary" icon="smartphone">
+                    <flux:button type="submit" variant="primary" icon="device-phone-mobile">
                         {{ __('Send STK Push') }}
                         <flux:badge size="sm" class="ml-1">KES {{ number_format($deposit->outstanding, 2) }}</flux:badge>
                     </flux:button>
@@ -48,7 +48,7 @@
                 @if ($deposit->status === 'held')
                 <form method="POST" action="{{ route('deposits.initiate-refund', $deposit) }}">
                     @csrf
-                    <flux:button type="submit" variant="ghost" icon="send">
+                    <flux:button type="submit" variant="ghost" icon="paper-airplane">
                         {{ __('Initiate Refund') }}
                         <flux:badge size="sm" class="ml-1">KES {{ number_format($deposit->net_refund_amount, 2) }}</flux:badge>
                     </flux:button>

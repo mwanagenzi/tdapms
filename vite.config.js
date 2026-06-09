@@ -23,7 +23,11 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
+        host: '0.0.0.0',   // accept connections from any host (ngrok, LAN)
         cors: true,
+        hmr: {
+            host: 'localhost', // HMR websocket stays on localhost
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },

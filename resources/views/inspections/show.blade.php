@@ -52,9 +52,9 @@
 
         {{-- Stats --}}
         <div class="grid gap-3 sm:grid-cols-4">
-            <x-stat-card icon="list" label="Total Items" value="{{ $inspection->items->count() }}" color="blue" />
+            <x-stat-card icon="list-bullet" label="Total Items" value="{{ $inspection->items->count() }}" color="blue" />
             <x-stat-card icon="check-circle" label="Good" value="{{ $inspection->items->where('condition', 'good')->count() }}" color="green" />
-            <x-stat-card icon="alert-triangle" label="Fair/Damaged" value="{{ $inspection->items->whereIn('condition', ['fair', 'damaged'])->count() }}" color="amber" />
+            <x-stat-card icon="exclamation-triangle" label="Fair/Damaged" value="{{ $inspection->items->whereIn('condition', ['fair', 'damaged'])->count() }}" color="amber" />
             <x-stat-card icon="x-circle" label="Missing" value="{{ $inspection->items->where('condition', 'missing')->count() }}" color="zinc" />
         </div>
 

@@ -17,7 +17,7 @@ class CaretakerController extends Controller
         $query = Caretaker::with(['user', 'properties']);
 
         if ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('properties', fn ($q) => $q->whereIn('properties.id', $propertyIds));
         }
 
@@ -132,7 +132,7 @@ class CaretakerController extends Controller
     private function getLandlordProperties($user)
     {
         if ($user->hasRole('landlord')) {
-            return Property::where('landlord_id', $user->landlord->id)->orderBy('name')->get();
+            return Property::where('landlord_id', $user->landlord?->id ?? 0)->orderBy('name')->get();
         }
 
         return Property::orderBy('name')->get();
@@ -141,7 +141,7 @@ class CaretakerController extends Controller
     private function authorizeCaretakerAccess(Caretaker $caretaker, $user): void
     {
         if ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $assigned = $caretaker->properties()->whereIn('properties.id', $propertyIds)->exists();
             if (! $assigned) {
                 abort(403);
@@ -152,7 +152,7 @@ class CaretakerController extends Controller
     private function authorizePropertyIds(array $propertyIds, $user): void
     {
         if ($user->hasRole('landlord')) {
-            $ownedIds = $user->landlord->properties()->pluck('id')->toArray();
+            $ownedIds = $user->landlord?->properties()->pluck('id') ?? collect()->toArray();
             foreach ($propertyIds as $id) {
                 if (! in_array($id, $ownedIds)) {
                     abort(403);

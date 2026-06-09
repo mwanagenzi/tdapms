@@ -28,10 +28,10 @@
 
         {{-- Summary --}}
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-stat-card icon="banknote" label="Monthly Rent" value="KES {{ number_format($lease->monthly_rent, 2) }}" color="blue" />
-            <x-stat-card icon="shield" label="Deposit Required" value="KES {{ number_format($lease->deposit_amount, 2) }}" color="amber" />
+            <x-stat-card icon="banknotes" label="Monthly Rent" value="KES {{ number_format($lease->monthly_rent, 2) }}" color="blue" />
+            <x-stat-card icon="shield-check" label="Deposit Required" value="KES {{ number_format($lease->deposit_amount, 2) }}" color="amber" />
             <x-stat-card icon="calendar" label="Start Date" value="{{ $lease->start_date->format('d M Y') }}" color="green" />
-            <x-stat-card icon="calendar-x" label="End Date" value="{{ $lease->end_date?->format('d M Y') ?? 'Open-ended' }}" color="zinc" />
+            <x-stat-card icon="calendar-days" label="End Date" value="{{ $lease->end_date?->format('d M Y') ?? 'Open-ended' }}" color="zinc" />
         </div>
 
         <div class="grid gap-4 lg:grid-cols-2">

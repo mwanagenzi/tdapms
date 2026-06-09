@@ -16,10 +16,10 @@ class DepositDeductionController extends Controller
         $query = DepositDeduction::with(['lease.tenant.user', 'lease.unit.property', 'reviewedBy']);
 
         if ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereHas('lease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         } elseif ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('lease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         }
 
@@ -38,13 +38,13 @@ class DepositDeductionController extends Controller
         $user = $request->user();
 
         $leases = Lease::with(['tenant.user', 'unit.property'])
-            ->whereIn('status', ['active', 'terminating'])
+            ->whereIn('status', ['pending_deposit', 'active', 'terminating'])
             ->when($user->hasRole('caretaker'), function ($q) use ($user) {
-                $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+                $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
                 $q->whereHas('unit', fn ($q2) => $q2->whereIn('property_id', $propertyIds));
             })
             ->when($user->hasRole('landlord'), function ($q) use ($user) {
-                $propertyIds = $user->landlord->properties()->pluck('id');
+                $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
                 $q->whereHas('unit', fn ($q2) => $q2->whereIn('property_id', $propertyIds));
             })
             ->get();
@@ -87,7 +87,7 @@ class DepositDeductionController extends Controller
         abort_if(! $depositDeduction->isPending(), 403, 'Only pending deductions can be edited.');
 
         $leases = Lease::with(['tenant.user', 'unit.property'])
-            ->whereIn('status', ['active', 'terminating'])
+            ->whereIn('status', ['pending_deposit', 'active', 'terminating'])
             ->get();
 
         return view('deposit-deductions.edit', compact('depositDeduction', 'leases'));

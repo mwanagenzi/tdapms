@@ -15,9 +15,9 @@ class UnitController extends Controller
         $query = Unit::with(['property', 'activeLease.tenant.user']);
 
         if ($user->hasRole('landlord')) {
-            $query->whereHas('property', fn ($q) => $q->where('landlord_id', $user->landlord->id));
+            $query->whereHas('property', fn ($q) => $q->where('landlord_id', $user->landlord?->id ?? 0));
         } elseif ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereIn('property_id', $propertyIds);
         }
 
@@ -125,11 +125,11 @@ class UnitController extends Controller
     private function getLandlordProperties($user)
     {
         if ($user->hasRole('landlord')) {
-            return Property::where('landlord_id', $user->landlord->id)->orderBy('name')->get();
+            return Property::where('landlord_id', $user->landlord?->id ?? 0)->orderBy('name')->get();
         }
 
         if ($user->hasRole('caretaker')) {
-            return $user->caretaker->properties()->orderBy('name')->get();
+            return $user->caretaker?->properties()->orderBy('name')->get() ?? collect();
         }
 
         return Property::orderBy('name')->get();
@@ -138,7 +138,7 @@ class UnitController extends Controller
     private function authorizePropertyId(int $propertyId, $user): void
     {
         if ($user->hasRole('landlord')) {
-            $exists = Property::where('id', $propertyId)->where('landlord_id', $user->landlord->id)->exists();
+            $exists = Property::where('id', $propertyId)->where('landlord_id', $user->landlord?->id ?? 0)->exists();
             if (! $exists) {
                 abort(403);
             }
@@ -148,13 +148,13 @@ class UnitController extends Controller
     private function authorizeUnitAccess(Unit $unit, $user): void
     {
         if ($user->hasRole('landlord')) {
-            if ($unit->property->landlord_id !== $user->landlord->id) {
+            if ($unit->property->landlord_id !== $user->landlord?->id) {
                 abort(403);
             }
         }
 
         if ($user->hasRole('caretaker')) {
-            $assigned = $user->caretaker->properties()->where('properties.id', $unit->property_id)->exists();
+            $assigned = $user->caretaker?->properties()->where('properties.id', $unit->property_id)->exists() ?? false;
             if (! $assigned) {
                 abort(403);
             }

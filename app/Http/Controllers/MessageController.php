@@ -22,7 +22,7 @@ class MessageController extends Controller
             }]);
 
         if ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->where(function ($q) use ($propertyIds) {
                 $q->where(function ($sub) use ($propertyIds) {
                     $sub->where('context_type', Lease::class)
@@ -32,7 +32,7 @@ class MessageController extends Controller
                 });
             });
         } elseif ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->where(function ($q) use ($propertyIds) {
                 $q->where(function ($sub) use ($propertyIds) {
                     $sub->where('context_type', Lease::class)

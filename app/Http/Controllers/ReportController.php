@@ -17,7 +17,7 @@ class ReportController extends Controller
         $query = Lease::with(['unit.property', 'tenant.user', 'deposit']);
 
         if ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         }
 
@@ -25,13 +25,13 @@ class ReportController extends Controller
         $terminatingLeases = (clone $query)->where('status', 'terminating')->count();
         $totalDepositsHeld = Deposit::whereHas('lease.unit', function ($q) use ($user) {
             if ($user->hasRole('landlord')) {
-                $q->whereIn('property_id', $user->landlord->properties()->pluck('id'));
+                $q->whereIn('property_id', $user->landlord?->properties()->pluck('id') ?? collect());
             }
         })->where('status', 'held')->sum('amount_paid');
 
         $openMaintenance = MaintenanceRequest::whereIn('status', ['submitted', 'in_progress'])
             ->when($user->hasRole('landlord'), function ($q) use ($user) {
-                $propertyIds = $user->landlord->properties()->pluck('id');
+                $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
                 $q->whereHas('unit', fn ($u) => $u->whereIn('property_id', $propertyIds));
             })
             ->count();

@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Add Tenant')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">{{ __('Add Tenant') }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ __('Create a tenant account. They will use this to access the mobile app.') }}</flux:text>
@@ -28,17 +28,17 @@
             </div>
 
             <flux:field>
-                <flux:label>{{ __('National ID Number') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('National ID Number') }} </flux:label>
                 <flux:input name="id_number" value="{{ old('id_number') }}" />
             </flux:field>
 
             <div class="grid gap-4 sm:grid-cols-2">
                 <flux:field>
-                    <flux:label>{{ __('Emergency Contact Name') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                    <flux:label aside="{{ __('Optional') }}">{{ __('Emergency Contact Name') }} </flux:label>
                     <flux:input name="emergency_contact_name" value="{{ old('emergency_contact_name') }}" />
                 </flux:field>
                 <flux:field>
-                    <flux:label>{{ __('Emergency Contact Phone') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                    <flux:label aside="{{ __('Optional') }}">{{ __('Emergency Contact Phone') }} </flux:label>
                     <flux:input name="emergency_contact_phone" value="{{ old('emergency_contact_phone') }}" />
                 </flux:field>
             </div>

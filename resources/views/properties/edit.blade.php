@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Edit Property')">
-    <flux:main class="max-w-2xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
 
         <div>
             <flux:heading size="xl">{{ __('Edit Property') }}</flux:heading>
@@ -33,7 +33,7 @@
                     <flux:label>{{ __('Property Type') }}</flux:label>
                     <flux:select name="type">
                         @foreach (['apartment', 'commercial', 'mixed'] as $type)
-                        <flux:option value="{{ $type }}" :selected="old('type', $property->type) === $type">{{ ucfirst($type) }}</flux:option>
+                        <option value="{{ $type }}"  @selected(old('type', $property->type) === $type)>{{ ucfirst($type) }}</option>
                         @endforeach
                     </flux:select>
                     @error('type') <flux:error>{{ $message }}</flux:error> @enderror

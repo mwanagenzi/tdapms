@@ -36,9 +36,9 @@
                     <flux:field>
                         <flux:label>New Status</flux:label>
                         <flux:select name="status">
-                            <flux:option value="in_progress">In Progress</flux:option>
-                            <flux:option value="completed">Completed</flux:option>
-                            <flux:option value="rejected">Rejected</flux:option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="rejected">Rejected</option>
                         </flux:select>
                     </flux:field>
                     <flux:field>

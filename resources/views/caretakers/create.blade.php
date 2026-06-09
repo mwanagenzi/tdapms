@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Add Caretaker')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">{{ __('Add Caretaker') }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ __('Create a caretaker account and assign them to properties.') }}</flux:text>
@@ -28,7 +28,7 @@
             </div>
 
             <flux:field>
-                <flux:label>{{ __('ID Number') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('ID Number') }} </flux:label>
                 <flux:input name="id_number" value="{{ old('id_number') }}" />
             </flux:field>
 
@@ -46,7 +46,7 @@
 
             @if ($properties->count())
             <flux:field>
-                <flux:label>{{ __('Assign to Properties') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('Assign to Properties') }} </flux:label>
                 <div class="mt-1 space-y-2">
                     @foreach ($properties as $property)
                     <label class="flex cursor-pointer items-center gap-2">

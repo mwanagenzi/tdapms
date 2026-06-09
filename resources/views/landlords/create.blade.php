@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Add Landlord')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">{{ __('Add Landlord') }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ __('Create a landlord account to manage their properties.') }}</flux:text>
@@ -28,7 +28,7 @@
             </div>
 
             <flux:field>
-                <flux:label>{{ __('Company Name') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('Company Name') }} </flux:label>
                 <flux:input name="company_name" value="{{ old('company_name') }}" />
             </flux:field>
 

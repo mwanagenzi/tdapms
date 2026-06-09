@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Edit Unit')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">Edit Unit {{ $unit->unit_number }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ $unit->property->name }}</flux:text>
@@ -13,7 +13,7 @@
                 <flux:label>{{ __('Property') }}</flux:label>
                 <flux:select name="property_id" required>
                     @foreach ($properties as $property)
-                        <flux:option value="{{ $property->id }}" :selected="old('property_id', $unit->property_id) == $property->id">{{ $property->name }}</flux:option>
+                        <option value="{{ $property->id }}"  @selected(old('property_id', $unit->property_id) == $property->id)>{{ $property->name }}</option>
                     @endforeach
                 </flux:select>
             </flux:field>
@@ -27,7 +27,7 @@
                     <flux:label>{{ __('Unit Type') }}</flux:label>
                     <flux:select name="type">
                         @foreach (['bedsitter' => 'Bedsitter', '1br' => '1 Bedroom', '2br' => '2 Bedroom', '3br' => '3 Bedroom', 'studio' => 'Studio', 'commercial' => 'Commercial', 'other' => 'Other'] as $val => $label)
-                            <flux:option value="{{ $val }}" :selected="old('type', $unit->type) === $val">{{ $label }}</flux:option>
+                            <option value="{{ $val }}"  @selected(old('type', $unit->type) === $val)>{{ $label }}</option>
                         @endforeach
                     </flux:select>
                 </flux:field>
@@ -48,7 +48,7 @@
                 <flux:label>{{ __('Status') }}</flux:label>
                 <flux:select name="status">
                     @foreach (['available' => 'Available', 'occupied' => 'Occupied', 'maintenance' => 'Maintenance'] as $val => $label)
-                        <flux:option value="{{ $val }}" :selected="old('status', $unit->status) === $val">{{ $label }}</flux:option>
+                        <option value="{{ $val }}"  @selected(old('status', $unit->status) === $val)>{{ $label }}</option>
                     @endforeach
                 </flux:select>
             </flux:field>

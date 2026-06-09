@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Record Deduction')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">{{ __('Record Deposit Deduction') }}</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ __('Document damage or costs to be deducted from the tenant deposit.') }}</flux:text>
@@ -11,11 +11,11 @@
             <flux:field>
                 <flux:label>{{ __('Lease') }}</flux:label>
                 <flux:select name="lease_id" required>
-                    <flux:option value="">{{ __('Select lease…') }}</flux:option>
+                    <option value="">{{ __('Select lease…') }}</option>
                     @foreach ($leases as $lease)
-                        <flux:option value="{{ $lease->id }}" :selected="old('lease_id') == $lease->id">
+                        <option value="{{ $lease->id }}"  @selected(old('lease_id') == $lease->id)>
                             {{ $lease->tenant->user->name }} — {{ $lease->unit->unit_number }} ({{ $lease->unit->property->name }})
-                        </flux:option>
+                        </option>
                     @endforeach
                 </flux:select>
                 @error('lease_id') <flux:error>{{ $message }}</flux:error> @enderror
@@ -29,7 +29,7 @@
             </flux:field>
 
             <flux:field>
-                <flux:label>{{ __('Description') }} <flux:label.suffix>{{ __('Optional') }}</flux:label.suffix></flux:label>
+                <flux:label aside="{{ __('Optional') }}">{{ __('Description') }} </flux:label>
                 <flux:textarea name="description" rows="3" placeholder="Detailed description of the damage or cost…">{{ old('description') }}</flux:textarea>
             </flux:field>
 

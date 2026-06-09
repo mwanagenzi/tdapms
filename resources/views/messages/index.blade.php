@@ -14,7 +14,7 @@
             <a href="{{ route('messages.show', $conversation) }}" wire:navigate
                class="flex items-start gap-4 border-b border-zinc-100 px-5 py-4 last:border-0 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800/50 transition">
                 <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                    <flux:icon name="message-circle" class="size-5 text-blue-600 dark:text-blue-400" />
+                    <flux:icon name="chat-bubble-left-right" class="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center justify-between gap-2">
@@ -38,7 +38,7 @@
             </a>
             @empty
             <div class="flex flex-col items-center justify-center py-16 text-center">
-                <flux:icon name="message-circle" class="mb-3 size-10 text-zinc-300" />
+                <flux:icon name="chat-bubble-left-right" class="mb-3 size-10 text-zinc-300" />
                 <flux:heading>{{ __('No conversations yet') }}</flux:heading>
                 <flux:text class="mt-1 text-zinc-500">{{ __('Conversations are created from leases and maintenance requests.') }}</flux:text>
             </div>

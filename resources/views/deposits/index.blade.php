@@ -17,7 +17,7 @@
 
         {{-- Total escrow balance --}}
         <div class="grid gap-4 sm:grid-cols-3">
-            <x-stat-card icon="shield" label="{{ __('Total Held in Escrow') }}" value="KES {{ number_format($totalHeld, 2) }}" color="green" />
+            <x-stat-card icon="shield-check" label="{{ __('Total Held in Escrow') }}" value="KES {{ number_format($totalHeld, 2) }}" color="green" />
             <x-stat-card icon="clock" label="{{ __('Pending Collection') }}" value="{{ $deposits->where('status', 'pending')->count() + $deposits->where('status', 'partially_paid')->count() }}" color="amber" />
             <x-stat-card icon="arrow-path" label="{{ __('Being Refunded') }}" value="{{ $deposits->where('status', 'refunding')->count() }}" color="sky" />
         </div>

@@ -16,10 +16,10 @@ class TenantController extends Controller
         $query = Tenant::with(['user', 'activeLease.unit.property']);
 
         if ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereHas('activeLease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         } elseif ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('activeLease.unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         }
 

@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Edit Deduction')">
-    <flux:main class="max-w-xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
         <div>
             <flux:heading size="xl">Edit Deduction</flux:heading>
             <flux:text class="mt-1 text-zinc-500">{{ $depositDeduction->reason }}</flux:text>

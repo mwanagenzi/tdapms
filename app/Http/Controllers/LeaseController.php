@@ -17,10 +17,10 @@ class LeaseController extends Controller
         $query = Lease::with(['tenant.user', 'unit.property', 'deposit']);
 
         if ($user->hasRole('caretaker')) {
-            $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereHas('unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         } elseif ($user->hasRole('landlord')) {
-            $propertyIds = $user->landlord->properties()->pluck('id');
+            $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
             $query->whereHas('unit', fn ($q) => $q->whereIn('property_id', $propertyIds));
         }
 
@@ -41,11 +41,11 @@ class LeaseController extends Controller
         $availableUnits = Unit::with('property')
             ->where('status', 'available')
             ->when($user->hasRole('caretaker'), function ($q) use ($user) {
-                $propertyIds = $user->caretaker->properties()->pluck('properties.id');
+                $propertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
                 $q->whereIn('property_id', $propertyIds);
             })
             ->when($user->hasRole('landlord'), function ($q) use ($user) {
-                $propertyIds = $user->landlord->properties()->pluck('id');
+                $propertyIds = $user->landlord?->properties()->pluck('id') ?? collect();
                 $q->whereIn('property_id', $propertyIds);
             })
             ->get();

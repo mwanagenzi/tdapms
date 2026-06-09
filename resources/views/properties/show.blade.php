@@ -34,7 +34,7 @@
         <div class="grid gap-4 sm:grid-cols-3">
             <x-stat-card icon="home" label="{{ __('Total Units') }}" value="{{ $property->units->count() }}" color="blue" />
             <x-stat-card icon="check-circle" label="{{ __('Available') }}" value="{{ $property->units->where('status', 'available')->count() }}" color="green" />
-            <x-stat-card icon="users" label="{{ __('Occupied') }}" value="{{ $property->units->where('status', 'occupied')->count() }}" color="indigo" />
+            <x-stat-card icon="user-group" label="{{ __('Occupied') }}" value="{{ $property->units->where('status', 'occupied')->count() }}" color="indigo" />
         </div>
 
         {{-- Caretakers --}}

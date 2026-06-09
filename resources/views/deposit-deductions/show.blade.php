@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Deduction Details')">
-    <flux:main class="max-w-2xl space-y-6">
+    <flux:main class="mx-auto w-1/2 space-y-6">
 
         <div class="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -58,7 +58,7 @@
             <form method="POST" action="{{ route('deposit-deductions.approve', $depositDeduction) }}" class="space-y-3">
                 @csrf
                 <flux:field>
-                    <flux:label>Notes <flux:label.suffix>Optional</flux:label.suffix></flux:label>
+                    <flux:label aside="Optional">Notes</flux:label>
                     <flux:textarea name="review_notes" rows="2" placeholder="Optional approval notes…"></flux:textarea>
                 </flux:field>
                 <flux:button type="submit" variant="primary" icon="check">Approve Deduction</flux:button>
@@ -66,10 +66,10 @@
 
             <form method="POST" action="{{ route('deposit-deductions.reject', $depositDeduction) }}" class="space-y-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                 <flux:field>
-                    <flux:label>Rejection Reason <flux:label.suffix class="text-red-500">Required</flux:label.suffix></flux:label>
+                    <flux:label>Rejection Reason <span class="ms-1.5 text-xs text-red-500">Required</span></flux:label>
                     <flux:textarea name="review_notes" rows="2" required placeholder="Explain why this deduction is rejected…"></flux:textarea>
                 </flux:field>
-                <flux:button type="submit" variant="ghost" class="text-red-600" icon="x">Reject Deduction</flux:button>
+                <flux:button type="submit" variant="ghost" class="text-red-600" icon="x-mark">Reject Deduction</flux:button>
             </form>
         </div>
         @endcan

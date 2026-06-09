@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Landlord;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,9 @@ class PropertyController extends Controller
         $query = Property::with(['units', 'caretakers.user']);
 
         if ($user->hasRole('landlord')) {
-            $query->where('landlord_id', $user->landlord->id);
+            $query->where('landlord_id', $user->landlord?->id ?? 0);
         } elseif ($user->hasRole('caretaker')) {
-            $caretakerPropertyIds = $user->caretaker->properties()->pluck('properties.id');
+            $caretakerPropertyIds = $user->caretaker?->properties()->pluck('properties.id') ?? collect();
             $query->whereIn('id', $caretakerPropertyIds);
         }
 
@@ -25,9 +26,13 @@ class PropertyController extends Controller
         return view('properties.index', compact('properties'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('properties.create');
+        $landlords = $request->user()->hasRole('super_admin')
+            ? Landlord::with('user')->orderBy('id')->get()
+            : collect();
+
+        return view('properties.create', compact('landlords'));
     }
 
     public function store(Request $request)
@@ -41,7 +46,14 @@ class PropertyController extends Controller
             'description'     => ['nullable', 'string'],
         ]);
 
-        $validated['landlord_id'] = $request->user()->landlord->id;
+        $user = $request->user();
+        if ($user->hasRole('super_admin')) {
+            $request->validate(['landlord_id' => ['required', 'exists:landlords,id']]);
+            $validated['landlord_id'] = $request->landlord_id;
+        } else {
+            $landlord = $user->landlord ?? Landlord::firstOrCreate(['user_id' => $user->id]);
+            $validated['landlord_id'] = $landlord->id;
+        }
 
         $property = Property::create($validated);
 
@@ -103,12 +115,12 @@ class PropertyController extends Controller
 
     private function authorizePropertyAccess(Property $property, $user): void
     {
-        if ($user->hasRole('landlord') && $property->landlord_id !== $user->landlord->id) {
+        if ($user->hasRole('landlord') && $property->landlord_id !== $user->landlord?->id) {
             abort(403);
         }
 
         if ($user->hasRole('caretaker')) {
-            $assigned = $user->caretaker->properties()->where('properties.id', $property->id)->exists();
+            $assigned = $user->caretaker?->properties()->where('properties.id', $property->id)->exists() ?? false;
             if (! $assigned) {
                 abort(403);
             }

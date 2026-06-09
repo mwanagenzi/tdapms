@@ -58,7 +58,7 @@
                 <div class="flex-1">
                     <flux:textarea name="body" rows="2" placeholder="{{ __('Type your message…') }}" required></flux:textarea>
                 </div>
-                <flux:button type="submit" variant="primary" icon="send">{{ __('Send') }}</flux:button>
+                <flux:button type="submit" variant="primary" icon="paper-airplane">{{ __('Send') }}</flux:button>
             </form>
         </div>
         @endcan

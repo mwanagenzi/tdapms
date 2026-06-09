@@ -43,7 +43,7 @@
             </div>
             @empty
             <div class="col-span-3 flex flex-col items-center justify-center py-16 text-center">
-                <flux:icon name="user-cog" class="mb-3 size-10 text-zinc-300" />
+                <flux:icon name="wrench-screwdriver" class="mb-3 size-10 text-zinc-300" />
                 <flux:heading>{{ __('No caretakers yet') }}</flux:heading>
                 <flux:text class="mt-1 text-zinc-500">{{ __('Add your first caretaker to assign them to properties.') }}</flux:text>
             </div>

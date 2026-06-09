@@ -19,9 +19,9 @@
         @endif
 
         <div class="grid gap-4 sm:grid-cols-3">
-            <x-stat-card icon="building" label="Properties" value="{{ $landlord->properties->count() }}" color="blue" />
+            <x-stat-card icon="building-office" label="Properties" value="{{ $landlord->properties->count() }}" color="blue" />
             <x-stat-card icon="home" label="Total Units" value="{{ $landlord->properties->sum(fn($p) => $p->units->count()) }}" color="indigo" />
-            <x-stat-card icon="users" label="Occupied Units" value="{{ $landlord->properties->sum(fn($p) => $p->units->where('status', 'occupied')->count()) }}" color="green" />
+            <x-stat-card icon="user-group" label="Occupied Units" value="{{ $landlord->properties->sum(fn($p) => $p->units->where('status', 'occupied')->count()) }}" color="green" />
         </div>
 
         <div class="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">

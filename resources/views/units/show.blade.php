@@ -25,7 +25,7 @@
 
         <div class="grid gap-4 sm:grid-cols-3">
             <x-stat-card icon="home" label="{{ __('Status') }}" value="{{ ucfirst($unit->status) }}" :color="match($unit->status) { 'available' => 'green', 'occupied' => 'blue', default => 'orange' }" />
-            <x-stat-card icon="maximize-2" label="{{ __('Size') }}" value="{{ $unit->size_sqft ? number_format($unit->size_sqft) . ' sqft' : '—' }}" color="zinc" />
+            <x-stat-card icon="arrows-pointing-out" label="{{ __('Size') }}" value="{{ $unit->size_sqft ? number_format($unit->size_sqft) . ' sqft' : '—' }}" color="zinc" />
             <x-stat-card icon="document-text" label="{{ __('Total Leases') }}" value="{{ $unit->leases->count() }}" color="indigo" />
         </div>
 
