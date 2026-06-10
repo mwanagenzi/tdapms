@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Deposit;
 use App\Models\EscrowTransaction;
 use App\Services\Mpesa\DarajaService;
+use App\Services\TenantNotificationService;
 use Illuminate\Http\Request;
 
 class DepositController extends Controller
 {
-    public function __construct(protected DarajaService $daraja) {}
+    public function __construct(
+        protected DarajaService $daraja,
+        protected TenantNotificationService $notifications,
+    ) {}
 
     public function index(Request $request)
     {
@@ -106,6 +110,8 @@ class DepositController extends Controller
                 'metadata' => ['merchant_request_id' => $result['merchant_request_id']],
             ]);
 
+            $this->notifications->depositCollectionInitiated($tenant, $outstanding, $phone);
+
             return back()->with('success',
                 "STK push sent to {$phone}. Amount: KES " . number_format($outstanding, 2) . ". " . $result['message']
             );
@@ -165,6 +171,8 @@ class DepositController extends Controller
                     'OriginatorConversationID'    => $result['originator_id'],
                 ],
             ]);
+
+            $this->notifications->depositRefundInitiated($tenant, $netRefund);
 
             return back()->with('success',
                 "Refund of KES " . number_format($netRefund, 2) . " queued. {$result['message']}"

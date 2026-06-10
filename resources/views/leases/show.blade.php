@@ -97,6 +97,37 @@
             </div>
         </div>
 
+        {{-- Messaging --}}
+        <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+            <div class="flex items-center justify-between">
+                <flux:heading size="sm">{{ __('Conversation') }}</flux:heading>
+                @can('create messages')
+                <form method="POST" action="{{ route('messages.start-conversation', $lease) }}">
+                    @csrf
+                    <flux:button type="submit" size="xs" icon="chat-bubble-left-right" wire:navigate>
+                        {{ __('Message Tenant') }}
+                    </flux:button>
+                </form>
+                @endcan
+            </div>
+            @php
+                $conversation = $lease->conversations->first();
+            @endphp
+            @if ($conversation)
+                <div class="mt-3 flex items-center justify-between rounded-lg border border-zinc-100 px-3 py-2 dark:border-zinc-800">
+                    <div>
+                        <p class="text-sm font-medium">{{ $conversation->subject }}</p>
+                        <p class="text-xs text-zinc-500">{{ $conversation->messages_count ?? $conversation->messages()->count() }} message(s)</p>
+                    </div>
+                    <flux:button href="{{ route('messages.show', $conversation) }}" size="xs" variant="ghost" wire:navigate>
+                        Open Thread
+                    </flux:button>
+                </div>
+            @else
+                <flux:text class="mt-3 text-zinc-400 text-sm">{{ __('No conversation started yet. Click "Message Tenant" to begin.') }}</flux:text>
+            @endif
+        </div>
+
         {{-- Deposit Deductions --}}
         @if ($lease->depositDeductions->count())
         <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">

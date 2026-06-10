@@ -6,11 +6,28 @@ use App\Models\Conversation;
 use App\Models\Lease;
 use App\Models\Message;
 use App\Models\MessageAttachment;
+use App\Services\TenantNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class MessageController extends Controller
 {
+    public function __construct(protected TenantNotificationService $notifications) {}
+
+    /**
+     * Start (or resume) a conversation thread for a lease.
+     * Creates the conversation if one doesn't exist yet, then redirects to it.
+     */
+    public function startConversation(Lease $lease)
+    {
+        $conversation = Conversation::firstOrCreate(
+            ['context_type' => Lease::class, 'context_id' => $lease->id],
+            ['subject' => "Lease: {$lease->tenant->user->name} — {$lease->unit->unit_number}"]
+        );
+
+        return redirect()->route('messages.show', $conversation);
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
@@ -85,6 +102,16 @@ class MessageController extends Controller
                     'mime_type'  => $file->getMimeType(),
                     'size'       => $file->getSize(),
                 ]);
+            }
+        }
+
+        // Notify the tenant if the sender is a staff member (caretaker/landlord)
+        $sender = $request->user();
+        if (! $sender->hasRole('tenant') && $conversation->context_type === Lease::class) {
+            $lease = $conversation->context;
+            $tenant = $lease?->tenant;
+            if ($tenant) {
+                $this->notifications->newMessage($tenant, $sender->name, $conversation->subject);
             }
         }
 

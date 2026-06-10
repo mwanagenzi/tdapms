@@ -104,6 +104,7 @@ class LeaseController extends Controller
             'deposit.escrowTransactions',
             'inspectionReports',
             'depositDeductions',
+            'conversations',
         ]);
 
         return view('leases.show', compact('lease'));

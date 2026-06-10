@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\MaintenanceRequest;
 use App\Models\MaintenanceUpdate;
+use App\Models\Message;
 use App\Models\Unit;
+use App\Services\TenantNotificationService;
 use Illuminate\Http\Request;
 
 class MaintenanceRequestController extends Controller
 {
+    public function __construct(protected TenantNotificationService $notifications) {}
+
     public function index(Request $request)
     {
         $user = $request->user();
@@ -91,6 +96,31 @@ class MaintenanceRequestController extends Controller
         ]);
 
         $maintenance->update(['status' => $validated['status']]);
+
+        // Post a message in the maintenance conversation thread
+        $updater = $request->user();
+        $conversation = Conversation::firstOrCreate(
+            ['context_type' => MaintenanceRequest::class, 'context_id' => $maintenance->id],
+            ['subject' => "Maintenance: {$maintenance->title}"]
+        );
+
+        $statusLabel = ucfirst(str_replace('_', ' ', $validated['status']));
+        Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id'       => $updater->id,
+            'body'            => "[Status updated to: {$statusLabel}]\n{$validated['notes']}",
+        ]);
+
+        // Notify the tenant
+        $tenant = $maintenance->tenant;
+        if ($tenant) {
+            $this->notifications->maintenanceUpdate(
+                $tenant,
+                $maintenance->title,
+                $validated['status'],
+                $validated['notes']
+            );
+        }
 
         return back()->with('success', 'Status updated successfully.');
     }

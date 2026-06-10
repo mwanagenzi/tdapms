@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class MaintenanceRequest extends Model
 {
@@ -30,6 +31,11 @@ class MaintenanceRequest extends Model
     public function updates(): HasMany
     {
         return $this->hasMany(MaintenanceUpdate::class);
+    }
+
+    public function conversations(): MorphMany
+    {
+        return $this->morphMany(Conversation::class, 'context');
     }
 
     public function getPriorityBadgeAttribute(): array

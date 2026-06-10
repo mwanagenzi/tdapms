@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\DepositDeduction;
 use App\Models\InspectionReportItem;
 use App\Models\Lease;
+use App\Services\TenantNotificationService;
 use Illuminate\Http\Request;
 
 class DepositDeductionController extends Controller
 {
+    public function __construct(protected TenantNotificationService $notifications) {}
+
     public function index(Request $request)
     {
         $user = $request->user();
@@ -62,7 +65,13 @@ class DepositDeductionController extends Controller
             'amount'                     => ['required', 'numeric', 'min:1'],
         ]);
 
-        DepositDeduction::create($validated);
+        $deduction = DepositDeduction::create($validated);
+
+        // Notify the tenant that a deduction has been recorded
+        $tenant = $deduction->lease->tenant;
+        if ($tenant) {
+            $this->notifications->deductionAdded($tenant, $validated['reason'], (float) $validated['amount']);
+        }
 
         return redirect()
             ->route('deposit-deductions.index')
@@ -139,6 +148,11 @@ class DepositDeductionController extends Controller
             'review_notes'  => $request->review_notes,
         ]);
 
+        $tenant = $deduction->lease->tenant;
+        if ($tenant) {
+            $this->notifications->deductionApproved($tenant, $deduction->reason, (float) $deduction->amount);
+        }
+
         return back()->with('success', 'Deduction approved. It will be applied to the net refund.');
     }
 
@@ -159,6 +173,11 @@ class DepositDeductionController extends Controller
             'reviewed_at'   => now(),
             'review_notes'  => $request->review_notes,
         ]);
+
+        $tenant = $deduction->lease->tenant;
+        if ($tenant) {
+            $this->notifications->deductionRejected($tenant, $deduction->reason, (float) $deduction->amount);
+        }
 
         return back()->with('success', 'Deduction rejected.');
     }

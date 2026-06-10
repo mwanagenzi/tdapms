@@ -4,11 +4,14 @@ namespace App\Services\Mpesa;
 
 use App\Models\Deposit;
 use App\Models\EscrowTransaction;
+use App\Services\TenantNotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DarajaCallbackHandler
 {
+    public function __construct(protected TenantNotificationService $notifications) {}
+
     // -------------------------------------------------------
     // STK Push callback — deposit collection result
     // -------------------------------------------------------
@@ -59,6 +62,7 @@ class DarajaCallbackHandler
 
                 $deposit = $transaction->deposit;
                 $deposit->increment('amount_paid', $amount);
+                $deposit->refresh();
 
                 // Update deposit status
                 if ($deposit->amount_paid >= $deposit->amount_required) {
@@ -73,6 +77,16 @@ class DarajaCallbackHandler
                 }
 
                 Log::info("Deposit #{$deposit->id} updated after STK payment. Paid: {$deposit->amount_paid}/{$deposit->amount_required}");
+
+                $tenant = $deposit->lease->tenant;
+                if ($tenant) {
+                    $this->notifications->depositReceived(
+                        $tenant,
+                        (float) $deposit->amount_paid,
+                        (float) $deposit->amount_required,
+                        $mpesaRef ?? 'N/A'
+                    );
+                }
             });
 
         } catch (\Throwable $e) {
@@ -134,6 +148,15 @@ class DarajaCallbackHandler
                 ]);
 
                 Log::info("Deposit #{$deposit->id} marked as refunded. MPESA Ref: {$mpesaRef}");
+
+                $tenant = $deposit->lease->tenant;
+                if ($tenant) {
+                    $this->notifications->depositRefunded(
+                        $tenant,
+                        (float) $transaction->amount,
+                        $mpesaRef ?? 'N/A'
+                    );
+                }
             });
 
         } catch (\Throwable $e) {

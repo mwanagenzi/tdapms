@@ -66,6 +66,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Messages
         Route::resource('messages', MessageController::class)->only(['index', 'show', 'store']);
+        Route::post('messages/conversation/lease/{lease}', [MessageController::class, 'startConversation'])
+            ->name('messages.start-conversation');
     });
 });
 

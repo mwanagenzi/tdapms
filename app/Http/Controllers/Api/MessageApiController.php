@@ -4,12 +4,66 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
+use App\Models\Lease;
 use App\Models\Message;
 use App\Models\MessageAttachment;
+use App\Services\TenantNotificationService;
 use Illuminate\Http\Request;
 
 class MessageApiController extends Controller
 {
+    /**
+     * Tenant initiates a new conversation for one of their leases.
+     * POST /api/messages   { lease_id, body }
+     */
+    public function create(Request $request)
+    {
+        $user   = $request->user();
+        $tenant = $user->tenant;
+
+        if (! $tenant) {
+            return response()->json(['message' => 'Tenant profile not found.'], 404);
+        }
+
+        $validated = $request->validate([
+            'lease_id' => ['required', 'exists:leases,id'],
+            'body'     => ['required', 'string'],
+        ]);
+
+        // Make sure the lease belongs to this tenant
+        $lease = Lease::where('id', $validated['lease_id'])
+            ->where('tenant_id', $tenant->id)
+            ->first();
+
+        if (! $lease) {
+            return response()->json(['message' => 'Lease not found for this tenant.'], 404);
+        }
+
+        $conversation = Conversation::firstOrCreate(
+            ['context_type' => Lease::class, 'context_id' => $lease->id],
+            ['subject' => "Lease: {$user->name} — {$lease->unit->unit_number}"]
+        );
+
+        $message = Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id'       => $user->id,
+            'body'            => $validated['body'],
+        ]);
+
+        return response()->json([
+            'data' => [
+                'conversation_id' => $conversation->id,
+                'message' => [
+                    'id'         => $message->id,
+                    'body'       => $message->body,
+                    'sender'     => ['id' => $user->id, 'name' => $user->name],
+                    'is_mine'    => true,
+                    'created_at' => $message->created_at->toISOString(),
+                ],
+            ],
+        ], 201);
+    }
+
     public function index(Request $request)
     {
         $user   = $request->user();

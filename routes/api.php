@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\InspectionReportApiController;
 use App\Http\Controllers\Api\MaintenanceRequestApiController;
 use App\Http\Controllers\Api\MessageApiController;
 use App\Http\Controllers\Api\NotificationApiController;
+use App\Http\Controllers\Api\TenantProfileApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,10 @@ Route::prefix('mpesa')->group(function () {
 Route::middleware(['auth:sanctum', 'role:tenant'])->group(function () {
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
+    // Tenant profile
+    Route::get('profile', [TenantProfileApiController::class, 'show']);
+    Route::put('profile', [TenantProfileApiController::class, 'update']);
+
     // Deposit
     Route::get('deposits', [DepositApiController::class, 'index']);
     Route::get('deposits/{deposit}', [DepositApiController::class, 'show']);
@@ -52,7 +57,8 @@ Route::middleware(['auth:sanctum', 'role:tenant'])->group(function () {
     Route::post('notifications/read-all', [NotificationApiController::class, 'markAllRead']);
 
     // Messages
+    Route::post('messages', [MessageApiController::class, 'create']);           // start new conversation
     Route::get('messages', [MessageApiController::class, 'index']);
     Route::get('messages/{conversation}', [MessageApiController::class, 'show']);
-    Route::post('messages/{conversation}', [MessageApiController::class, 'store']);
+    Route::post('messages/{conversation}', [MessageApiController::class, 'store']); // reply
 });
